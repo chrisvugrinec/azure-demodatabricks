@@ -1,0 +1,39 @@
+resource "random_uuid" "ruid-demodatabricks-keyvault___OPL___" {}
+
+resource "azurerm_key_vault" "kv-demodatabricks-___OPL___" {
+  name                = "kv-demodb-${substr(random_uuid.ruid-demodatabricks-keyvault___OPL___.result,0,10)}"
+  location            = var.location
+  resource_group_name = "${var.rg-name}___OPL___"
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  sku_name            = "premium"
+  tags                = {"Alias" = "___OPL___"}
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = true
+ 
+/* 
+  network_acls {
+     default_action = "Deny"
+     bypass = "AzureServices"
+     virtual_network_subnet_ids = [ ] 
+  }
+*/
+  depends_on = [ azurerm_resource_group.rg-cctopleiding-demodatabricks___OPL___  ] 
+}
+
+
+/*
+resource "azurerm_private_endpoint" "pe-demodatabricks-keyvault___OPL___" {
+  name                = "pe-demodatabricks-keyvault___OPL___"
+  location            = var.location
+  resource_group_name = "${var.rg-name}___OPL___"
+  subnet_id           = azurerm_subnet.snet-demodatabricks-customers___OPL___Endpoints.id
+  tags                = {"Alias" = "___OPL___"}
+  private_service_connection {
+    name                           = "pe-demodatabricks-keyvault___OPL___"
+    private_connection_resource_id = azurerm_key_vault.kv-demodatabricks-___OPL___.id
+    is_manual_connection           = false    
+    subresource_names              = ["vault"]
+  }
+}
+*/
+

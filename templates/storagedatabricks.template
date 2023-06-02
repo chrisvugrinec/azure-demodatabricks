@@ -1,0 +1,21 @@
+# DATABRICKS ___OPL___
+resource "azurerm_storage_account" "___SAName___" {
+  name                = "___SAName___"
+  resource_group_name = "${var.rg-name}___OPL___"
+
+  location                 = var.location
+  account_tier             = "Premium"
+  account_replication_type = "ZRS"
+  is_hns_enabled = true
+  account_kind = "BlockBlobStorage"
+  min_tls_version          = "TLS1_2"
+  allow_nested_items_to_be_public = false
+  network_rules {
+    default_action             = "Deny"
+    virtual_network_subnet_ids = [ data.azurerm_subnet.snet-aap-buildagentVms.id, data.azurerm_subnet.snet-dataplatform-databricks___OPL___Prv.id, data.azurerm_subnet.snet-dataplatform-databricks___OPL___Pub.id ]
+
+  }
+  lifecycle {
+    prevent_destroy = true
+  }
+}

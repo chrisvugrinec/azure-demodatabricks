@@ -1,0 +1,67 @@
+resource "azurerm_subnet" "snet-demodatabricks-customers___OPL___Pub" {
+  name                 = "snet-demodatabricks-customers___OPL___Pub"
+  resource_group_name  = var.rg-name
+  virtual_network_name = data.azurerm_virtual_network.vnet-demodatabricks-services.name
+  private_endpoint_network_policies_enabled = true
+  address_prefixes     = [ "${var.snet-demodatabricks-customers___OPL___Pub}" ]
+  service_endpoints    = ["Microsoft.Storage","Microsoft.KeyVault" ]
+  delegation {
+    name = "delegation"
+
+    service_delegation {
+      name    = "Microsoft.Databricks/workspaces"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+        "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+        "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action",
+      ]
+    }
+  }
+}
+
+resource "azurerm_subnet_network_security_group_association" "nsga-demodatabricks-customers___OPL___Pub" {
+  subnet_id= azurerm_subnet.snet-demodatabricks-customers___OPL___Pub.id
+  network_security_group_id = data.azurerm_network_security_group.nsg-demodatabricks-dbricks1.id
+}
+
+resource "azurerm_subnet" "snet-demodatabricks-customers___OPL___Prv" {
+  name= "snet-demodatabricks-customers___OPL___Prv"
+  resource_group_name  = var.rg-name
+  virtual_network_name = data.azurerm_virtual_network.vnet-demodatabricks-services.name
+  private_endpoint_network_policies_enabled = true
+  address_prefixes     = [ "${var.snet-demodatabricks-customers___OPL___Prv}" ]
+  service_endpoints    = ["Microsoft.Storage","Microsoft.KeyVault" ]
+  delegation {
+    name = "delegation"
+
+    service_delegation {
+      name    = "Microsoft.Databricks/workspaces"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+        "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+        "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action",
+      ]
+    }
+  }
+}
+
+resource "azurerm_subnet_network_security_group_association" "nsga-demodatabricks-customers___OPL___Prv" {
+  subnet_id= azurerm_subnet.snet-demodatabricks-customers___OPL___Prv.id
+  network_security_group_id = data.azurerm_network_security_group.nsg-demodatabricks-dbricks1.id
+}
+
+resource "azurerm_subnet" "snet-demodatabricks-customers___OPL___Endpoints" {
+  name= "snet-demodatabricks-customers___OPL___Endpoints"
+  resource_group_name  = var.rg-name
+  virtual_network_name = data.azurerm_virtual_network.vnet-demodatabricks-services.name
+  private_endpoint_network_policies_enabled = true
+  address_prefixes     = [ "${var.snet-demodatabricks-customers___OPL___Endpoints}" ]
+  service_endpoints    = ["Microsoft.Storage","Microsoft.KeyVault" ]
+}
+
+resource "azurerm_subnet_network_security_group_association" "nsga-demodatabricks-customers___OPL___Endpoints" {
+  subnet_id= azurerm_subnet.snet-demodatabricks-customers___OPL___Endpoints.id
+  network_security_group_id = data.azurerm_network_security_group.nsg-demodatabricks-StandaardNSG.id
+}
+
+

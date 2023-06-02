@@ -1,0 +1,9 @@
+resource "random_uuid" "ruid-dataplatform-___OPL___GebruikerSub" {}
+
+# grp-dataplatform-___OPL___Gebruiker
+resource "azurerm_role_assignment" "ras-dataplatform-___OPL___GebruikerToSub" {
+  name  = random_uuid.ruid-dataplatform-___OPL___GebruikerSub.result
+  role_definition_name = "Reader"
+  scope                = "/subscriptions/e4b98d9a-85c9-4631-8d30-061f53d4a35c"
+  principal_id  = "___OPL-GRPID___"
+}

@@ -1,0 +1,71 @@
+resource "azurerm_databricks_workspace" "dbws-demodatabricks-___OPL___" {
+  name                        = "dbws-demodatabricks-___OPL___"
+  resource_group_name         = "${var.rg-name}___OPL___"
+  #managed_resource_group_name = azurerm_resource_group.rg-cctopleiding-demodatabricks___OPL___.name
+  location                    = var.location
+  sku                         = "premium" 
+
+  customer_managed_key_enabled = false
+  
+  custom_parameters {
+    no_public_ip         = true
+    virtual_network_id   = data.azurerm_virtual_network.vnet-demodatabricks-services.id
+    private_subnet_name  = "snet-demodatabricks-customers___OPL___Prv"
+    public_subnet_name   = "snet-demodatabricks-customers___OPL___Pub"
+    public_subnet_network_security_group_association_id = data.azurerm_network_security_group.nsg-demodatabricks-StandaardNSG.id
+    private_subnet_network_security_group_association_id = data.azurerm_network_security_group.nsg-demodatabricks-StandaardNSG.id
+    # Storage account moet gemaakt worden tijdens creatie
+    # storage_account_name = azurerm_storage_account.sa-demodatabricks-databricks___OPL___.name
+  }
+  depends_on = [
+    azurerm_resource_group.rg-cctopleiding-demodatabricks___OPL___, 
+    azurerm_subnet.snet-demodatabricks-customers___OPL___Prv,
+    azurerm_subnet.snet-demodatabricks-customers___OPL___Pub,
+    azurerm_subnet.snet-demodatabricks-customers___OPL___Endpoints
+  ]
+  tags = var.tags
+}
+
+
+resource "azurerm_monitor_diagnostic_setting" "ds-demodatabricks-databricks___OPL___" {
+  name               = "ds-demodatabricks-databricks___OPL___"
+  target_resource_id = azurerm_databricks_workspace.dbws-demodatabricks-___OPL___.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.laws-demodatabricks-logging.id
+
+  enabled_log {
+    category = "dbfs"
+
+    retention_policy {
+      enabled = true
+      days = var.logretention_days_default
+    }
+
+  }
+ enabled_log {
+    category = "clusters"
+
+    retention_policy {
+      enabled = true
+      days = var.logretention_days_default
+    }
+}
+  enabled_log {
+    category = "workspace"
+
+    retention_policy {
+      enabled = true
+      days = var.logretention_days_default
+    }
+  }
+ enabled_log {
+    category = "instancePools"
+
+    retention_policy {
+      enabled = true
+      days = var.logretention_days_default
+    }
+  }
+  lifecycle {
+    ignore_changes = [  log_analytics_destination_type ]
+  }
+}

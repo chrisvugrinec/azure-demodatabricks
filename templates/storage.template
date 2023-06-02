@@ -1,0 +1,174 @@
+resource "random_id" "rid-demodatabricks-delivery___OPL___" { byte_length = 4 }
+resource "random_id" "rid-demodatabricks-databricks___OPL___" { byte_length = 4 }
+
+# DELIVERY ___OPL___
+resource "azurerm_storage_account" "sa-demodatabricks-delivery___OPL___" {
+  name                = "sademodbrckdlv${random_id.rid-demodatabricks-delivery___OPL___.hex}"
+  resource_group_name = "${var.rg-name}___OPL___"
+
+  location                 = var.location
+  account_tier             = "Premium"
+  account_replication_type = "ZRS"
+  is_hns_enabled = true
+  account_kind = "BlockBlobStorage"
+  min_tls_version          = "TLS1_2"
+  allow_nested_items_to_be_public = false
+  /*
+  network_rules {
+    default_action             = "Deny"
+    virtual_network_subnet_ids = []
+  }
+  */
+  lifecycle {
+    prevent_destroy = true
+  }
+  depends_on = [ azurerm_resource_group.rg-cctopleiding-demodatabricks___OPL___  ] 
+}
+
+resource "azurerm_storage_data_lake_gen2_filesystem" "sadlg2-demodatabricks-delivery___OPL___" {
+  name               = lower("sadlg2-demodatabricks-delivery___OPL___")
+  storage_account_id = azurerm_storage_account.sa-demodatabricks-delivery___OPL___.id
+  depends_on         = [ azurerm_storage_account.sa-demodatabricks-delivery___OPL___ ]
+}
+
+# Endpoints
+/*
+resource "azurerm_private_endpoint" "pe-demodatabricks-dbricksHubToDelivery___OPL___DFS" {
+  name                = "pe-demodatabricks-dbricksHubToDelivery___OPL___DFS"
+  location            = var.location
+  resource_group_name = "${var.rg-name}___OPL___"
+  subnet_id           = azurerm_subnet.snet-demodatabricks-customers___OPL___Endpoints.id 
+
+  private_service_connection {
+    name                           = "psc-demodatabricks-dbricksHubToDelivery___OPL___DFS"
+    private_connection_resource_id = azurerm_storage_account.sa-demodatabricks-delivery___OPL___.id
+    subresource_names              = ["dfs"]
+    is_manual_connection           = false
+
+  }
+  lifecycle {
+    ignore_changes = [ private_dns_zone_group ]
+  }
+
+}
+*/
+
+
+
+# DATABRICKS ___OPL___
+resource "azurerm_storage_account" "sa-demodatabricks-databricks___OPL___" {
+  name                = "sademodbrckdbr${random_id.rid-demodatabricks-databricks___OPL___.hex}"
+  resource_group_name = "${var.rg-name}___OPL___"
+  location                 = var.location
+  account_tier             = "Premium"
+  account_replication_type = "ZRS"
+  is_hns_enabled = true
+  account_kind = "BlockBlobStorage"
+  min_tls_version          = "TLS1_2"
+  allow_nested_items_to_be_public = false
+  /*
+  network_rules {
+    default_action             = "Deny"
+    virtual_network_subnet_ids = [ ]
+
+  }
+  */
+  lifecycle {
+    prevent_destroy = true
+  }
+  depends_on = [ azurerm_resource_group.rg-cctopleiding-demodatabricks___OPL___  ] 
+}
+
+resource "azurerm_storage_container" "sac-demodatabricks-___OPL___Data" {
+  name                  = "data"
+  storage_account_name  = azurerm_storage_account.sa-demodatabricks-databricks___OPL___.name
+  container_access_type = "private"
+}
+
+
+resource "azurerm_storage_container" "sac-demodatabricks-___OPL___Analyse" {
+  name                  = "analyse"
+  storage_account_name  = azurerm_storage_account.sa-demodatabricks-databricks___OPL___.name
+  container_access_type = "private"
+}
+
+
+resource "azurerm_monitor_diagnostic_setting" "ds-demodatabricks-saDataplatform___OPL___" {
+  name               = "ds-demodatabricks-saDataplatform___OPL___"
+  target_resource_id = azurerm_storage_account.sa-demodatabricks-databricks___OPL___.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.laws-demodatabricks-logging.id
+  lifecycle {
+    ignore_changes= [log_analytics_destination_type]
+  }
+  metric {
+    category = "Transaction"
+  
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+  metric {
+    category = "Capacity"
+  
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+}
+
+
+resource "azurerm_monitor_diagnostic_setting" "ds-demodatabricks-saDataplatform___OPL___Blob" {
+  name               = "ds-demodatabricks-saDataplatform___OPL___Blob"
+  target_resource_id = "${azurerm_storage_account.sa-demodatabricks-databricks___OPL___.id}/blobServices/default/"
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.laws-demodatabricks-logging.id
+  lifecycle {
+    ignore_changes= [log_analytics_destination_type]
+  }
+  metric {
+    category = "Capacity"
+  
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+
+  enabled_log {
+    category = "StorageRead"
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "StorageWrite"
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+  metric {
+    category = "Transaction"
+    enabled  = true
+    retention_policy {
+      days    = 5
+      enabled = true
+    }
+  }
+
+}
+

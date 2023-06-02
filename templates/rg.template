@@ -1,0 +1,5 @@
+resource "azurerm_resource_group" "rg-cctopleiding-demodatabricks___OPL___" {
+  name = "${var.rg-name}___OPL___"
+  location = var.location
+  tags = var.tags
+}
