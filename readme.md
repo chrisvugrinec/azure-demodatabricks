@@ -1,4 +1,4 @@
-![Uploading image.png…]()
+<img width="1998" alt="image" src="https://github.com/chrisvugrinec/azure-demodatabricks/assets/24852199/e5f02b98-57ed-4871-84d7-2c19d4b80efb">
 
 
 # Pre requisites
