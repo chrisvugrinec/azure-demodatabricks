@@ -1,5 +1,11 @@
-name: GitHub Actions Vuggie Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚁 🚗 🚚
+name: Manual Trigger Demo
+run-name: ${{ github.actor }} is testing out Trigger Demo 🚁 🚗 🚚
+on:
+  workflow_dispatch:
+    inputs:
+      flutter_version:
+        description: 'Framework version'
+        required: true
 on: [push]
 jobs:
   Explore-GitHub-Actions:
