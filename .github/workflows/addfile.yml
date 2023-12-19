@@ -1,4 +1,4 @@
-name: Commit date to master
+name: Test Add File to Git from Action
 on: push
 jobs:
   date:
