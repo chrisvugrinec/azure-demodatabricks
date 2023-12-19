@@ -6,7 +6,6 @@ on:
       flutter_version:
         description: 'Framework version'
         required: true
-on: [push]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
