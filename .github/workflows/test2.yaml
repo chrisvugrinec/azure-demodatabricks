@@ -1,5 +1,5 @@
 name: GitHub Actions Vuggie Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions :helicopter:
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚁 🚗 🚚
 on: [push]
 jobs:
   Explore-GitHub-Actions:
