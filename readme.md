@@ -7,4 +7,6 @@
 # Create initieel infra for data platform
 
 - Comment out the customers/variables.tf data references (they do not exist yet)
+
+test
 - 
