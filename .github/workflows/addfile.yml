@@ -15,7 +15,7 @@ jobs:
 
       - name: setup git config
         run: |
-          git config user.name "GitHub Actions Bot"
+          git config user.name "chrisvugrinec"
           git config user.email "<>"
 
       - name: commit
