@@ -1,0 +1,28 @@
+name: Version Build
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build-version:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    - name: git
+      run: |
+        git --version
+        git config user.name "Github Action"
+        git config user.email "<>"
+        git status
+        git tag
+        echo "hello world" >hello.txt
+        git add hello.txt
+        git commit -am "added hello"
+        git push
+        git describe
