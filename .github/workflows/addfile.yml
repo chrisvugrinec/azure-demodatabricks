@@ -12,11 +12,11 @@ jobs:
 
     steps:
 
-      - name: say hello (testing secret)
+      - shell: say Hello
         env:
           SUPER_SECRET: ${{ secrets.HW_DEMO }}
         run: |
-          echo "Hello {{ SUPER_SECRET }}"
+          example-command "$SUPER_SECRET"
 
       # Checkout the branch
       - name: checkout
