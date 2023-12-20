@@ -18,10 +18,15 @@ jobs:
 
       - shell: bash
         env:
+          PAYLOAD: ${{ github.event.deployment.payload }}
+        run: |
+          echo "$PAYLOAD"
+      
+      - shell: bash
+        env:
           SUPER_SECRET: ${{ secrets.HW_DEMO }} 
         run: |
           echo "$SUPER_SECRET" | sed 's/./& /g'
-          echo "${{ github.event.deployment.payload.command }}"
 
       # Checkout the branch
       - name: checkout
