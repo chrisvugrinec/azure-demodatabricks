@@ -12,7 +12,7 @@ jobs:
 
     steps:
 
-      - shell: say Hello
+      - shell: bash
         env:
           SUPER_SECRET: ${{ secrets.HW_DEMO }}
         run: |
