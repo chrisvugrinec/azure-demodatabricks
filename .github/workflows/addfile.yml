@@ -16,7 +16,7 @@ jobs:
         env:
           SUPER_SECRET: ${{ secrets.HW_DEMO }}
         run: |
-          example-command "$SUPER_SECRET"
+          echo "$SUPER_SECRET"
 
       # Checkout the branch
       - name: checkout
