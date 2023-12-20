@@ -13,8 +13,10 @@ jobs:
     steps:
 
       - name: say hello (testing secret)
+        env:
+          SUPER_SECRET: ${{ secrets.HW_DEMO }}
         run: |
-          echo "Hello {{ secrets.HW_DEMO }}"
+          echo "Hello {{ SUPER_SECRET }}"
 
       # Checkout the branch
       - name: checkout
