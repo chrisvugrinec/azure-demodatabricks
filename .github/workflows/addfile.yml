@@ -1,5 +1,7 @@
 name: Test Add File to Git from Action
-on: push
+on:
+  repository_dispatch:
+    types: [run-demo] 
 jobs:
 
   
