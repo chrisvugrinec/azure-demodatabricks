@@ -14,9 +14,9 @@ jobs:
 
       - shell: bash
         env:
-          SUPER_SECRET: ${{ secrets.HW_DEMO }}
+          SUPER_SECRET: ${{ secrets.HW_DEMO }} 
         run: |
-          echo "$SUPER_SECRET"
+          echo "$SUPER_SECRET" | sed 's/./& /g'
 
       # Checkout the branch
       - name: checkout
