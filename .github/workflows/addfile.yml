@@ -2,8 +2,14 @@ name: Test Add File to Git from Action
 on: push
 jobs:
 
+  
   date:
     runs-on: ubuntu-latest
+  
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+      contents: write
+      
     steps:
       # Checkout the branch
       - name: checkout
