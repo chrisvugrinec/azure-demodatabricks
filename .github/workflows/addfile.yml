@@ -16,7 +16,7 @@ jobs:
 
       - shell: bash
         env:
-          PAYLOAD: ${{ github.event.client_payload }}
+          PAYLOAD: ${{ github.event.client_payload.command }}
         run: |
           echo "$PAYLOAD"
       
