@@ -1,11 +1,13 @@
 name: Test Add File to Git from Action
-on: push
-  workflow_call:
-    secrets:     
-      GH_TOKEN:  
-        description: 'GH token with access to this repo'
-        required: true
+
+on push:
+  secrets:     
+    GH_TOKEN:  
+      description: 'GH token with access to this repo'
+     required: true
+
 jobs:
+
   date:
     runs-on: ubuntu-latest
     steps:
