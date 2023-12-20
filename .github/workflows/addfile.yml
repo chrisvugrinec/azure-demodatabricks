@@ -5,7 +5,7 @@ on:
 jobs:
   
   run-demo:
-    name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+    name: Deploy to ${{ github.env }} by @${{ github.actor }}
     runs-on: ubuntu-latest
   
     permissions:
@@ -16,7 +16,7 @@ jobs:
 
       - shell: bash
         env:
-          PAYLOAD: ${{ github.event.run-demo.payload }}
+          PAYLOAD: ${{ inputs.payload }}
         run: |
           echo "$PAYLOAD"
       
