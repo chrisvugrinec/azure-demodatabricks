@@ -3,11 +3,9 @@ on:
   repository_dispatch:
     types: [run-demo] 
 jobs:
-
-
-
   
   run-demo:
+    name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
     runs-on: ubuntu-latest
   
     permissions:
